@@ -2,7 +2,11 @@ import json
 import logging
 
 class Config:
+    """
+    設定を管理するクラス
+    """
     def __init__(self):
+        # 各パラメータの初期化
         self.bGray = None
         self.frame = None
         self.pLength = None
@@ -15,6 +19,9 @@ class Config:
         self.config_file = "config.json"
 
     def load(self):
+        """
+        設定をファイルから読み込む。ファイルがない場合は手動入力を促す。
+        """
         logger = logging.getLogger(__name__)
 
         # 設定ファイルの読み込み
@@ -42,11 +49,15 @@ class Config:
         self.validate_parameters()
 
     def manual_input(self):
+        """
+        ユーザーからの手動入力でパラメータを設定する。
+        """
         from tkinter import Tk
         from tkinter.filedialog import askopenfilename, asksaveasfilename
 
         Tk().withdraw()  # GUIウィンドウを表示しない
 
+        # ユーザーにパラメータを入力してもらう
         self.bGray = int(input("輝度のしきい値を入力してください："))
         self.frame = int(input("フレーム数を入力してください："))
         self.pLength = float(input("ピクセル長（μm/ピクセル）を入力してください："))
@@ -54,6 +65,7 @@ class Config:
         self.y2 = int(input("位置補正値を入力してください："))
         self.start_frame = int(input("気泡分布データの開始フレームを入力してください："))
 
+        # ファイルの選択
         print("気泡の輝度データファイルを選択してください。")
         self.bubble_path = askopenfilename(title="気泡の輝度データファイルを選択")
 
@@ -64,6 +76,9 @@ class Config:
         self.output_path = asksaveasfilename(title="出力ファイルを保存", defaultextension=".csv")
 
     def validate_parameters(self):
+        """
+        必要なパラメータがすべて設定されているか確認する。
+        """
         logger = logging.getLogger(__name__)
 
         required_params = {
