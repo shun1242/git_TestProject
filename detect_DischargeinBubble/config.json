@@ -1,0 +1,11 @@
+{
+    "bGray": 100,
+    "frame": 2,
+    "pLength": 1.0,
+    "Image_size": 1024,
+    "y2": 50,
+    "start_frame": 0,
+    "bubble_path": "path/to/bubble_data.xlsx",
+    "spark_path": "path/to/spark_data.csv",
+    "output_path": "path/to/output.csv"
+}
