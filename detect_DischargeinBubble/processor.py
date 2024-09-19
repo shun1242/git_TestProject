@@ -11,11 +11,10 @@ class Processor:
         self.bubble_data = bubble_data
         self.spark_data = spark_data
         self.result_data = None
+        self.total_sparks = 0  # 元の放電総数をカウントする属性
+        self.total_gas_discharges = 0  # 気中放電の総数をカウントする属性
 
     def process(self):
-        """
-        データを処理し、気中放電を検出する。
-        """
         logger = logging.getLogger(__name__)
         logger.info("データの処理を開始します。")
 
@@ -29,64 +28,81 @@ class Processor:
         # 気泡データのサイズ
         bubble_rows, bubble_cols = self.bubble_data.shape
 
-        # 放電位置データの処理
+        # 放電位置データのコピーを作成
         spark_data = self.spark_data.copy()
+
+        # 欠損値をNaNに変換
         spark_data.replace({'*': np.nan}, inplace=True)
 
-        # 列名の設定（省略）
+        # 列名の確認
+        logger.info(f"放電位置データの列名: {spark_data.columns.tolist()}")
+
+        # 時間列の名前を取得（日本語対応）
+        time_column_name = '時間' if '時間' in spark_data.columns else 'Time'
+
+        # データの列名を取得
+        all_columns = spark_data.columns.tolist()
+        position_columns = [col for col in all_columns if col != time_column_name]
+        num_points = len(position_columns) // 3
+
+        # 結果の列名を設定
+        columns = [time_column_name]
+        for i in range(1, num_points + 1):
+            columns.extend([f'P{i}(X)', f'P{i}(Y)', f'P{i}(Area)'])
 
         # 結果を格納するリスト
         result_rows = []
 
+        # 各行の処理
         for index, row in spark_data.iterrows():
-            time = row['Time']
-            new_row = {'Time': time}
-            has_spark = False
-
-            # フレーム番号の計算
-            k = index  # 放電位置データのフレーム番号
-            k_frame = k - frame_offset  # 気泡の輝度データの列インデックス
-
-            # 列インデックスの範囲チェック
-            if k_frame < 0 or k_frame >= bubble_cols:
-                continue  # 範囲外の場合は次の行へ
+            time = row[time_column_name]
+            new_row = {time_column_name: time}
 
             for i in range(1, num_points + 1):
-                y_value = row.get(f'P{i}(Y)', np.nan)
+                x_col = f'P{i}(X)'
+                y_col = f'P{i}(Y)'
+                area_col = f'P{i}(Area)'
 
-                if pd.isna(y_value):
-                    # 欠損値の場合
-                    new_row[f'P{i}(X)'] = '*'
-                    new_row[f'P{i}(Y)'] = '*'
-                    new_row[f'P{i}(Area)'] = '*'
-                    continue
+                y_value = row.get(y_col, np.nan)
 
-                # 放電位置の計算（元の計算式に戻す）
-                Discharge_p = ((y_value) - (Image_size - y2) * pLength) / pLength
-                Discharge_p = int(round(Discharge_p))
+                if not pd.isna(y_value):
+                    # 放電が存在する場合、元の放電数をカウント
+                    self.total_sparks += 1
 
-                # 行インデックスの範囲チェック
-                if 0 <= Discharge_p < bubble_rows:
-                    bubble_value = self.bubble_data[Discharge_p, k_frame]
-                    if bubble_value >= bGray:
-                        # 気中放電と判定
-                        new_row[f'P{i}(X)'] = row[f'P{i}(X)']
-                        new_row[f'P{i}(Y)'] = y_value
-                        new_row[f'P{i}(Area)'] = row[f'P{i}(Area)']
-                        has_spark = True
+                    # 放電位置の計算
+                    Discharge_p = ((y_value) - (Image_size - y2) * pLength) / pLength
+                    Discharge_p = int(round(Discharge_p))
+
+                    # フレーム番号の計算
+                    k = index  # 放電位置データのフレーム番号
+                    k_frame = k - frame_offset  # 気泡の輝度データの列インデックス
+
+                    # インデックスの範囲チェック
+                    if 0 <= Discharge_p < bubble_rows and 0 <= k_frame < bubble_cols:
+                        bubble_value = self.bubble_data[Discharge_p, k_frame]
+                        if bubble_value >= bGray:
+                            # 気中放電と判定
+                            new_row[x_col] = row[x_col]
+                            new_row[y_col] = y_value
+                            new_row[area_col] = row[area_col]
+                            self.total_gas_discharges += 1  # 気中放電数をカウント
+                        else:
+                            # 気中放電ではない場合
+                            new_row[x_col] = '*'
+                            new_row[y_col] = '*'
+                            new_row[area_col] = '*'
                     else:
-                        # 気中放電ではない場合
-                        new_row[f'P{i}(X)'] = '*'
-                        new_row[f'P{i}(Y)'] = '*'
-                        new_row[f'P{i}(Area)'] = '*'
+                        # インデックス範囲外の場合
+                        new_row[x_col] = '*'
+                        new_row[y_col] = '*'
+                        new_row[area_col] = '*'
                 else:
-                    # 行インデックスが範囲外の場合
-                    new_row[f'P{i}(X)'] = '*'
-                    new_row[f'P{i}(Y)'] = '*'
-                    new_row[f'P{i}(Area)'] = '*'
+                    # 欠損値の場合
+                    new_row[x_col] = '*'
+                    new_row[y_col] = '*'
+                    new_row[area_col] = '*'
 
-            if has_spark:
-                result_rows.append(new_row)
+            result_rows.append(new_row)
 
         # 結果のデータフレームを作成
         self.result_data = pd.DataFrame(result_rows, columns=columns)

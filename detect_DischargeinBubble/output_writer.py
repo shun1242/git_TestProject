@@ -1,71 +1,59 @@
+import os
 import logging
-import matplotlib.pyplot as plt
+import datetime
+import pandas as pd
 
 class OutputWriter:
     """
     結果の出力とデータの可視化を行うクラス
     """
-    def __init__(self, config):
+    def __init__(self, config, processor):
         self.config = config
+        self.processor = processor  # Processor インスタンスを受け取る
 
     def write(self, result_data):
-        """
-        結果をファイルに書き込み、データを可視化する。
-        """
         logger = logging.getLogger(__name__)
         try:
-            # パラメータ情報をファイルの冒頭に追加
+            # 出力ディレクトリを取得
+            output_dir = self.config.output_path
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
+                logger.info(f"出力ディレクトリを作成しました: {output_dir}")
+
+            # ファイル名を自動生成（例: result_YYYYMMDD_HHMMSS.csv）
+            now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+            output_file = f"result_{now}.csv"
+            output_path = os.path.join(output_dir, output_file)
+
+            # 気中放電率の計算
+            total_gas_discharges = self.processor.total_gas_discharges
+            total_sparks = self.processor.total_sparks
+            if total_sparks > 0:
+                gas_discharge_rate = total_gas_discharges / total_sparks
+            else:
+                gas_discharge_rate = 0.0
+
+            # パラメータ情報をヘッダーとして作成
             header_lines = [
-                f"# bGray = {self.config.bGray}",
-                f"# frame = {self.config.frame}",
-                f"# pLength = {self.config.pLength}",
-                f"# Image_size = {self.config.Image_size}",
-                f"# y2 = {self.config.y2}",
+                f"# bGray: {self.config.bGray}, frame: {self.config.frame}, pLength: {self.config.pLength}",
+                f"# Image_size: {self.config.Image_size}, y2: {self.config.y2}",
+                f"# Total Gas Discharges: {total_gas_discharges}, Total Sparks in Original CSV: {total_sparks}",
+                f"# Gas Discharge Rate: {gas_discharge_rate:.4f}",
+                "#"  # 空行を追加してヘッダーを5行にする
             ]
 
-            # 結果をCSVファイルに書き込む
-            with open(self.config.output_path, 'w', encoding='utf-8') as f:
+            # ヘッダーをファイルに書き込む
+            with open(output_path, 'w', encoding='utf-8-sig') as f:
                 for line in header_lines:
-                    f.write(line + '\n')
-                result_data.to_csv(f, index=False, header=True)
-            logger.info("結果を出力ファイルに書き込みました。")
+                    f.write(f"{line}\n")
 
-            # データの可視化
-            self.visualize_data(result_data)
+            # データをCSV形式で追記
+            result_data.to_csv(output_path, mode='a', index=False, encoding='utf-8-sig')
+    
+            logger.info(f"結果をファイルに書き込みました: {output_path}")
+
+            # 保存したファイルのパスを返す（後で可視化で使用）
+            return output_path
         except Exception as e:
             logger.error("結果の書き込みに失敗しました: %s", e)
             raise
-
-    def visualize_data(self, result_data):
-        """
-        結果データを可視化し、プロットを保存する。
-        """
-        logger = logging.getLogger(__name__)
-        try:
-            # 欠損値を除いたデータを取得
-            plot_data = []
-            for index, row in result_data.iterrows():
-                time = row['Time']
-                for col in result_data.columns:
-                    if '(Y)' in col and row[col] != '*':
-                        y_value = float(row[col])
-                        plot_data.append((time, y_value))
-
-            if plot_data:
-                # プロットの作成
-                times, y_values = zip(*plot_data)
-                plt.figure(figsize=(10, 6))
-                plt.scatter(times, y_values, marker='o')
-                plt.xlabel('時間')
-                plt.ylabel('放電のY座標（μm）')
-                plt.title('時間と放電位置の散布図')
-                plt.grid(True)
-                # プロットの保存
-                plot_path = self.config.output_path.replace('.csv', '_plot.png')
-                plt.savefig(plot_path)
-                plt.close()
-                logger.info("データの可視化が完了しました。プロットを %s に保存しました。", plot_path)
-            else:
-                logger.warning("可視化するデータがありません。")
-        except Exception as e:
-            logger.error("データの可視化に失敗しました: %s", e)

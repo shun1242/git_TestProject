@@ -1,6 +1,7 @@
 import pandas as pd
 import logging
 import numpy as np
+import os
 
 class DataLoader:
     """
@@ -26,19 +27,20 @@ class DataLoader:
             raise
 
     def load_spark_data(self):
-        """
-        放電位置データを読み込む。
-        """
         logger = logging.getLogger(__name__)
         try:
-            # 先頭の6行をスキップし、データ部分のみを読み込む
+            if not os.path.exists(self.config.spark_path):
+                logger.error("放電位置データファイルが存在しません: %s", self.config.spark_path)
+                raise FileNotFoundError(f"放電位置データファイルが存在しません: {self.config.spark_path}")
+
+            # ヘッダー行を読み込むために skiprows=5 と header=0 を指定
             spark_data = pd.read_csv(
                 self.config.spark_path,
-                header=None,
-                skiprows=6,
+                skiprows=5,
+                encoding='cp932',
                 na_values='*',
                 keep_default_na=False,
-                encoding='cp932'  # または 'shift_jis' を試してください
+                header=0
             )
             logger.info("放電位置データを読み込みました。")
             return spark_data
