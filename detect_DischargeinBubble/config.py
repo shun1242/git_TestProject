@@ -12,7 +12,6 @@ class Config:
         self.pLength = None
         self.Image_size = None
         self.y2 = None
-        self.start_frame = None
         self.bubble_path = None
         self.spark_path = None
         self.output_path = None
@@ -33,7 +32,6 @@ class Config:
                 self.pLength = data.get('pLength')
                 self.Image_size = data.get('Image_size')
                 self.y2 = data.get('y2')
-                self.start_frame = data.get('start_frame')
                 self.bubble_path = data.get('bubble_path')
                 self.spark_path = data.get('spark_path')
                 self.output_path = data.get('output_path')
@@ -63,7 +61,6 @@ class Config:
         self.pLength = float(input("ピクセル長（μm/ピクセル）を入力してください："))
         self.Image_size = int(input("画像サイズ（ピクセル数）を入力してください："))
         self.y2 = int(input("位置補正値を入力してください："))
-        self.start_frame = int(input("気泡分布データの開始フレームを入力してください："))
 
         # ファイルの選択
         print("気泡の輝度データファイルを選択してください。")
@@ -87,7 +84,6 @@ class Config:
             'pLength': self.pLength,
             'Image_size': self.Image_size,
             'y2': self.y2,
-            'start_frame': self.start_frame,
             'bubble_path': self.bubble_path,
             'spark_path': self.spark_path,
             'output_path': self.output_path

@@ -21,7 +21,6 @@ class OutputWriter:
                 f"# pLength = {self.config.pLength}",
                 f"# Image_size = {self.config.Image_size}",
                 f"# y2 = {self.config.y2}",
-                f"# start_frame = {self.config.start_frame}"
             ]
 
             # 結果をCSVファイルに書き込む

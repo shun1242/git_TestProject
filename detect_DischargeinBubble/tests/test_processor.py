@@ -13,7 +13,6 @@ class TestProcessor(unittest.TestCase):
         self.config.pLength = 1.0
         self.config.Image_size = 10
         self.config.y2 = 2
-        self.config.start_frame = 0
 
         # テスト用のデータ
         self.bubble_data = np.array([
