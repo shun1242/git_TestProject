@@ -36,6 +36,12 @@ def save_frame_range(video_path, start_frame, stop_frame, step_frame, dir_path, 
 #                  200, 300, 10,
 #                  'data/temp/result_range', 'sample_video_img')
 
+<<<<<<< HEAD
 save_frame_range(r"E:\ObservedMovie\20240905_APZ\Re_APZ_10000_1_conbined_10000frame.avi",
                  0, 10000, 1,
                  r"E:\ObservedMovie\20240905_APZ\Re_APZ_10000_1_conbined_10000frame_frame", "img")
+=======
+save_frame_range(r"F:\ObservedMovie\20240905_APZ\Re_APZ_10000_1_conbined_10000frame_差分.avi",
+                 0, 6400, 1,
+                 r"F:\ObservedMovie\20240905_APZ\frame", "img")
+>>>>>>> a531586bf5a6a1aff55901f45cbbb12c8c133a85
