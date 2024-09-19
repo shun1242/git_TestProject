@@ -3,6 +3,9 @@ import numpy as np
 import pandas as pd
 
 class Processor:
+    """
+    データの処理と気中放電の検出を行うクラス
+    """
     def __init__(self, config, bubble_data, spark_data):
         self.config = config
         self.bubble_data = bubble_data
@@ -10,6 +13,9 @@ class Processor:
         self.result_data = None
 
     def process(self):
+        """
+        データを処理し、気中放電を検出する。
+        """
         logger = logging.getLogger(__name__)
         logger.info("データの処理を開始します。")
 
@@ -24,7 +30,7 @@ class Processor:
         # 気泡データのサイズ
         bubble_rows, bubble_cols = self.bubble_data.shape
 
-        # 放電位置データの処理
+        # 放電位置データのコピーを作成
         spark_data = self.spark_data.copy()
 
         # 欠損値をNaNに変換
@@ -33,7 +39,7 @@ class Processor:
         # 列名を設定
         num_columns = spark_data.shape[1]
         columns = ['Time']
-        num_points = (num_columns - 1) // 3
+        num_points = (num_columns - 1) // 3  # 放電位置のポイント数
         for i in range(1, num_points + 1):
             columns.extend([f'P{i}(X)', f'P{i}(Y)', f'P{i}(Area)'])
         spark_data.columns = columns
@@ -41,16 +47,17 @@ class Processor:
         # 結果を格納するリスト
         result_rows = []
 
-        # 各行の処理
+        # 各行（時間ごとのデータ）の処理
         for index, row in spark_data.iterrows():
             time = row['Time']
             new_row = {'Time': time}
-            has_spark = False
+            has_spark = False  # 気中放電が検出されたかどうか
 
             for i in range(1, num_points + 1):
                 y_value = row.get(f'P{i}(Y)', np.nan)
 
                 if pd.isna(y_value):
+                    # 欠損値の場合
                     new_row[f'P{i}(X)'] = '*'
                     new_row[f'P{i}(Y)'] = '*'
                     new_row[f'P{i}(Area)'] = '*'
@@ -74,17 +81,18 @@ class Processor:
                         new_row[f'P{i}(Area)'] = row[f'P{i}(Area)']
                         has_spark = True
                     else:
-                        # 欠損値として扱う
+                        # 気中放電ではない場合
                         new_row[f'P{i}(X)'] = '*'
                         new_row[f'P{i}(Y)'] = '*'
                         new_row[f'P{i}(Area)'] = '*'
                 else:
-                    # インデックス範囲外の場合も欠損値
+                    # インデックス範囲外の場合
                     new_row[f'P{i}(X)'] = '*'
                     new_row[f'P{i}(Y)'] = '*'
                     new_row[f'P{i}(Area)'] = '*'
 
             if has_spark:
+                # 気中放電が検出された行のみ追加
                 result_rows.append(new_row)
 
         # 結果のデータフレームを作成

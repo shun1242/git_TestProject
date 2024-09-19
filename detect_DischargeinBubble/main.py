@@ -26,7 +26,7 @@ def main():
     processor = Processor(config, bubble_data, spark_data)
     result_data = processor.process()
 
-    # 結果の出力
+    # 結果の出力とデータの可視化
     output_writer = OutputWriter(config)
     output_writer.write(result_data)
 
