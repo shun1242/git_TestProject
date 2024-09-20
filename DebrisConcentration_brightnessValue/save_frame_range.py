@@ -36,6 +36,6 @@ def save_frame_range(video_path, start_frame, stop_frame, step_frame, dir_path, 
 #                  200, 300, 10,
 #                  'data/temp/result_range', 'sample_video_img')
 
-save_frame_range(r"F:\ObservedMovie\20240905_APZ\Re_APZ_10000_1_conbined_10000frame_差分.avi",
-                 0, 6400, 1,
-                 r"F:\ObservedMovie\20240905_APZ\frame", "img")
+save_frame_range(r"H:\ObservedMovie\20240703_APZandW\AP(ON00)\コピー - ON00_2(フレーム平均差分).avi",
+                 6399, 6400, 1,
+                 r"H:\ObservedMovie\20240703_APZandW\AP(ON00)\frame", "img")
