@@ -1,11 +1,11 @@
 {
-    "bGray": 50,
+    "bGray": 10,
     "frame": 1,
-    "pLength": 17.762,
+    "pLength": 17.953,
     "Image_size": 643,
-    "y2": 593,
-    "bubble_path": "E:/ObservedMovie/20240703_APZandW/W/W3_10000fps(回転1.00)(フレーム間平均差分)_frame/W3_10000fps(回転1.00)(フレーム間平均差分)_result_2850-3349.xlsx",
-    "spark_path":  "E:/ObservedMovie/20240703_APZandW/W/W3_10000fps(回転)(差分)(平均化5-5)(二値化106)_放電位置(キャリブレーション済み)+(面積).csv",
-    "output_path": "E:/ObservedMovie/20240703_APZandW/"
+    "y2": 589,
+    "bubble_path": "H:/ObservedMovie/20240703_APZandW/W/W3_10000fps(回転1.00)(フレーム間平均差分)_frame/result_0-6399frame.xlsx",
+    "spark_path":  "H:/ObservedMovie/20240703_APZandW/W/W3_10000fps(回転)(差分)(平均化5-5)(二値化106)_放電位置(キャリブレーション済み)+(面積).csv",
+    "output_path": "H:/ObservedMovie/20240703_APZandW/W"
 }
 
