@@ -1,0 +1,178 @@
+2024-09-19 15:37:36,229 [INFO] __main__: プログラムを開始します。
+2024-09-19 15:37:36,231 [INFO] config: 設定ファイルを読み込みました。
+2024-09-19 15:37:36,231 [INFO] config: すべてのパラメータが正常に設定されました。
+2024-09-19 15:37:36,233 [ERROR] data_loader: 気泡の輝度データの読み込みに失敗しました: [Errno 2] No such file or directory: 'E:/ObservedMovie/20240703_APZandW/W/W2_10000fps_回転1.00_frame/result_0-499frame.xlsx'
+2024-09-19 15:37:36,233 [ERROR] root: エラーが発生しました: [Errno 2] No such file or directory: 'E:/ObservedMovie/20240703_APZandW/W/W2_10000fps_回転1.00_frame/result_0-499frame.xlsx'
+Traceback (most recent call last):
+  File "C:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\main.py", line 37, in <module>
+    main()
+  File "C:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\main.py", line 22, in main
+    bubble_data = data_loader.load_bubble_data()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\data_loader.py", line 16, in load_bubble_data
+    bubble_data = pd.read_excel(self.config.bubble_path, header=None)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\i1204\Anaconda3\envs\myenv\Lib\site-packages\pandas\io\excel\_base.py", line 495, in read_excel
+    io = ExcelFile(
+         ^^^^^^^^^^
+  File "C:\Users\i1204\Anaconda3\envs\myenv\Lib\site-packages\pandas\io\excel\_base.py", line 1550, in __init__
+    ext = inspect_excel_format(
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\i1204\Anaconda3\envs\myenv\Lib\site-packages\pandas\io\excel\_base.py", line 1402, in inspect_excel_format
+    with get_handle(
+         ^^^^^^^^^^^
+  File "C:\Users\i1204\Anaconda3\envs\myenv\Lib\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'E:/ObservedMovie/20240703_APZandW/W/W2_10000fps_回転1.00_frame/result_0-499frame.xlsx'
+2024-09-19 15:41:23,178 [INFO] __main__: プログラムを開始します。
+2024-09-19 15:41:23,180 [INFO] config: 設定ファイルを読み込みました。
+2024-09-19 15:41:23,180 [INFO] config: すべてのパラメータが正常に設定されました。
+2024-09-19 15:43:42,909 [INFO] data_loader: 気泡の輝度データを読み込みました。
+2024-09-19 15:43:42,923 [INFO] data_loader: 気泡の輝度データの行を逆転させました。
+2024-09-19 15:43:42,970 [ERROR] data_loader: 放電位置データの読み込みに失敗しました: 'utf-8' codec can't decode byte 0x87 in position 12: invalid start byte
+2024-09-19 15:43:42,971 [ERROR] root: エラーが発生しました: 'utf-8' codec can't decode byte 0x87 in position 12: invalid start byte
+Traceback (most recent call last):
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\main.py", line 37, in <module>
+    main()
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\main.py", line 23, in main
+    spark_data = data_loader.load_spark_data()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\data_loader.py", line 35, in load_spark_data
+    spark_data = pd.read_csv(
+                 ^^^^^^^^^^^^
+  File "c:\Users\i1204\anaconda3\Lib\site-packages\pandas\io\parsers\readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\i1204\anaconda3\Lib\site-packages\pandas\io\parsers\readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\i1204\anaconda3\Lib\site-packages\pandas\io\parsers\readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\i1204\anaconda3\Lib\site-packages\pandas\io\parsers\readers.py", line 1898, in _make_engine
+    return mapping[engine](f, **self.options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\i1204\anaconda3\Lib\site-packages\pandas\io\parsers\c_parser_wrapper.py", line 93, in __init__
+    self._reader = parsers.TextReader(src, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "parsers.pyx", line 574, in pandas._libs.parsers.TextReader.__cinit__
+  File "parsers.pyx", line 782, in pandas._libs.parsers.TextReader._get_header
+  File "parsers.pyx", line 874, in pandas._libs.parsers.TextReader._tokenize_rows
+  File "parsers.pyx", line 891, in pandas._libs.parsers.TextReader._check_tokenize_status
+  File "parsers.pyx", line 2053, in pandas._libs.parsers.raise_parser_error
+  File "c:\Users\i1204\anaconda3\Lib\codecs.py", line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x87 in position 12: invalid start byte
+2024-09-19 16:11:16,413 [INFO] __main__: プログラムを開始します。
+2024-09-19 16:11:16,415 [INFO] config: 設定ファイルを読み込みました。
+2024-09-19 16:11:16,415 [INFO] config: すべてのパラメータが正常に設定されました。
+2024-09-19 16:13:04,821 [INFO] data_loader: 気泡の輝度データを読み込みました。
+2024-09-19 16:13:04,835 [INFO] data_loader: 気泡の輝度データの行を逆転させました。
+2024-09-19 16:13:04,854 [INFO] data_loader: 放電位置データを読み込みました。
+2024-09-19 16:13:04,854 [INFO] processor: データの処理を開始します。
+2024-09-19 16:13:04,859 [ERROR] root: エラーが発生しました: 'Time'
+Traceback (most recent call last):
+  File "c:\Users\i1204\anaconda3\envs\myenv\Lib\site-packages\pandas\core\indexes\base.py", line 3805, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 175, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\\_libs\\index_class_helper.pxi", line 70, in pandas._libs.index.Int64Engine._check_type
+KeyError: 'Time'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\main.py", line 37, in <module>
+    main()
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\main.py", line 27, in main
+    result_data = processor.process()
+                  ^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\processor.py", line 42, in process
+    time = row['Time']
+           ~~~^^^^^^^^
+  File "c:\Users\i1204\anaconda3\envs\myenv\Lib\site-packages\pandas\core\series.py", line 1121, in __getitem__
+    return self._get_value(key)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\i1204\anaconda3\envs\myenv\Lib\site-packages\pandas\core\series.py", line 1237, in _get_value
+    loc = self.index.get_loc(label)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\i1204\anaconda3\envs\myenv\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    raise KeyError(key) from err
+KeyError: 'Time'
+2024-09-19 16:15:18,110 [INFO] __main__: プログラムを開始します。
+2024-09-19 16:15:18,112 [INFO] config: 設定ファイルを読み込みました。
+2024-09-19 16:15:18,112 [INFO] config: すべてのパラメータが正常に設定されました。
+2024-09-19 16:17:07,385 [INFO] data_loader: 気泡の輝度データを読み込みました。
+2024-09-19 16:17:07,394 [INFO] data_loader: 気泡の輝度データの行を逆転させました。
+2024-09-19 16:17:07,409 [INFO] data_loader: 放電位置データを読み込みました。
+2024-09-19 16:17:07,409 [INFO] processor: データの処理を開始します。
+2024-09-19 16:17:07,412 [ERROR] root: エラーが発生しました: 'Time'
+Traceback (most recent call last):
+  File "c:\Users\i1204\anaconda3\envs\myenv\Lib\site-packages\pandas\core\indexes\base.py", line 3805, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 175, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\\_libs\\index_class_helper.pxi", line 70, in pandas._libs.index.Int64Engine._check_type
+KeyError: 'Time'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\main.py", line 37, in <module>
+    main()
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\main.py", line 27, in main
+    result_data = processor.process()
+                  ^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\processor.py", line 42, in process
+    time = row['Time']
+           ~~~^^^^^^^^
+  File "c:\Users\i1204\anaconda3\envs\myenv\Lib\site-packages\pandas\core\series.py", line 1121, in __getitem__
+    return self._get_value(key)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\i1204\anaconda3\envs\myenv\Lib\site-packages\pandas\core\series.py", line 1237, in _get_value
+    loc = self.index.get_loc(label)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\i1204\anaconda3\envs\myenv\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    raise KeyError(key) from err
+KeyError: 'Time'
+2024-09-19 16:22:02,348 [INFO] __main__: プログラムを開始します。
+2024-09-19 16:22:02,350 [INFO] config: 設定ファイルを読み込みました。
+2024-09-19 16:22:02,350 [INFO] config: すべてのパラメータが正常に設定されました。
+2024-09-19 16:23:48,963 [INFO] data_loader: 気泡の輝度データを読み込みました。
+2024-09-19 16:23:48,972 [INFO] data_loader: 気泡の輝度データの行を逆転させました。
+2024-09-19 16:23:48,973 [ERROR] data_loader: 放電位置データの読み込みに失敗しました: name 'os' is not defined
+2024-09-19 16:23:48,973 [ERROR] root: エラーが発生しました: name 'os' is not defined
+Traceback (most recent call last):
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\main.py", line 37, in <module>
+    main()
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\main.py", line 23, in main
+    spark_data = data_loader.load_spark_data()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\data_loader.py", line 31, in load_spark_data
+    if not os.path.exists(self.config.spark_path):
+           ^^
+NameError: name 'os' is not defined. Did you forget to import 'os'
+2024-09-19 16:24:46,889 [INFO] __main__: プログラムを開始します。
+2024-09-19 16:24:46,891 [INFO] config: 設定ファイルを読み込みました。
+2024-09-19 16:24:46,892 [INFO] config: すべてのパラメータが正常に設定されました。
+2024-09-19 16:26:28,931 [INFO] data_loader: 気泡の輝度データを読み込みました。
+2024-09-19 16:26:28,941 [INFO] data_loader: 気泡の輝度データの行を逆転させました。
+2024-09-19 16:26:28,969 [INFO] data_loader: 放電位置データを読み込みました。
+2024-09-19 16:26:28,969 [INFO] processor: データの処理を開始します。
+2024-09-19 16:26:28,971 [INFO] processor: 放電位置データの列名: ['時間', 'P1(X)', 'P1(Y)', 'P1(Area)', 'P2(X)', 'P2(Y)', 'P2(Area)', 'P3(X)', 'P3(Y)', 'P3(Area)', 'P4(X)', 'P4(Y)', 'P4(Area)']
+2024-09-19 16:26:30,481 [INFO] processor: データの処理が完了しました。
+2024-09-19 16:26:30,483 [ERROR] output_writer: 結果の書き込みに失敗しました: [Errno 13] Permission denied: 'C:/Users/i1204/OneDrive - 岡山大学/Documents/研究室_D/test2'
+2024-09-19 16:26:30,484 [ERROR] root: エラーが発生しました: [Errno 13] Permission denied: 'C:/Users/i1204/OneDrive - 岡山大学/Documents/研究室_D/test2'
+Traceback (most recent call last):
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\main.py", line 37, in <module>
+    main()
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\main.py", line 31, in main
+    output_writer.write(result_data)
+  File "c:\Users\i1204\Documents\Python\git_TestProject\detect_DischargeinBubble\output_writer.py", line 27, in write
+    with open(self.config.output_path, 'w', encoding='utf-8') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:/Users/i1204/OneDrive - 岡山大学/Documents/研究室_D/test2'
