@@ -22,9 +22,8 @@ def input_observation_area():
     y_min = float(input("Y座標の最小値: "))
     y_max = float(input("Y座標の最大値: "))
     x_min = float(input("X座標の最小値: "))
+    x_max = float(input("X座標の最大値: "))
     
-    # x_maxは正方形と仮定して決定
-    x_max = x_min + (y_max - y_min)
     return x_min, x_max, y_min, y_max
 
 def read_csv_data(csv_file):
@@ -81,8 +80,8 @@ def calculate_diameter_and_volume(bubble_df):
     
     # 体積を計算（計算式は空欄）
     def calculate_volume(diameter):
-        if diameter > 200:
-            volume = np.pi * ((diameter / 2) ** 2 ) * 200  # 底面がdiameterの円，高さが加工溝幅（200umとする）の円柱の体積
+        if diameter > 100:
+            volume = np.pi * ((diameter / 2) ** 2 ) * 100  # 底面がdiameterの円，高さが加工溝幅（100umとする）の円柱の体積
         else:
             volume = (4 * np.pi / 3) * ((diameter / 2) ** 3 )  # 球の体積
         return volume
