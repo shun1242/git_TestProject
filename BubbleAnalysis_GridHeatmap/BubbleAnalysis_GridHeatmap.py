@@ -99,21 +99,28 @@ def filter_bubbles_in_area(bubble_df, x_min, x_max, y_min, y_max):
 
 def aggregate_data(bubble_df, x_min, x_max, y_min, y_max):
     """データをグリッドごとに集計する。"""
-    grid_size = 10
-    x_bins = np.linspace(x_min, x_max, grid_size + 1)
-    y_bins = np.linspace(y_min, y_max, grid_size + 1)
-    
+    import math  # 変更箇所：floor関数利用のためmathをインポート
+
+    # Y方向を基準にセルサイズを決定
+    cell_size = (y_max - y_min) / 10.0
+    y_bins = np.linspace(y_min, y_max, 11)  # Y方向は10分割固定
+
+    # X方向のグリッド数を切り捨てで決定
+    x_range = x_max - x_min
+    num_x_cells = math.floor(x_range / cell_size)
+    x_bins = np.linspace(x_min, x_min + num_x_cells * cell_size, num_x_cells + 1)
+    # 変更箇所ここまで
+
     # グリッド番号を割り当て
     bubble_df['X_bin'] = pd.cut(bubble_df['X'], bins=x_bins, labels=False, include_lowest=True)
     bubble_df['Y_bin'] = pd.cut(bubble_df['Y'], bins=y_bins, labels=False, include_lowest=True)
-    
-    # 集計
-    total_grids = grid_size * grid_size
+
+    total_grids = num_x_cells * 10  # グリッド総数はX方向×10
     processed_grids = 0
     results = []
     print("集計を開始します...")
-    for x in range(grid_size):
-        for y in range(grid_size):
+    for x in range(num_x_cells):  # X方向のループ回数がnum_x_cells
+        for y in range(10):       # Y方向は10固定
             grid_data = bubble_df[
                 (bubble_df['X_bin'] == x) & (bubble_df['Y_bin'] == y)
             ]
@@ -127,7 +134,6 @@ def aggregate_data(bubble_df, x_min, x_max, y_min, y_max):
                 'Average_Diameter': average_diameter,
                 'Total_Volume': total_volume
             })
-            # 進行状況の表示
             processed_grids += 1
             progress = (processed_grids / total_grids) * 100
             print(f"進行状況: {progress:.2f}% ({processed_grids}/{total_grids})", end='\r')
